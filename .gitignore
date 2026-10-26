@@ -1,0 +1,8 @@
+venv/
+.venv/
+__pycache__/
+*.pyc
+.env
+.ipynb_checkpoints/
+data/ccount.csv
+data/clean_footfall_sales.csv
