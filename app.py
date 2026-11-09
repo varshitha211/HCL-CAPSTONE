@@ -7,6 +7,7 @@ Run with:  streamlit run app.py
 
 import json
 import joblib
+import shap
 import numpy as np
 import pandas as pd
 import streamlit as st
@@ -237,6 +238,62 @@ with tabs[4]:
     ax.set_ylabel("Predicted Sales ($)")
     ax.set_title("Actual vs Predicted Sales")
     st.pyplot(fig)
+
+
+    
+    # --------------------------------------------------------------
+    # SHAP EXPLAINABILITY
+    # --------------------------------------------------------------
+    st.markdown("---")
+    st.subheader("SHAP Explainability")
+
+    st.write(
+        "SHAP explains how each input feature contributes "
+        "to the model's sales predictions."
+    )
+
+    background = features.sample(
+        min(100, len(features)),
+        random_state=42
+    ).astype("float64")
+
+    explain_data = features.sample(
+        min(300, len(features)),
+        random_state=42
+    ).astype("float64")
+
+    # Create SHAP explainer using the existing trained model
+    explainer = shap.Explainer(model2, background)
+    raw_shap_values = explainer(explain_data)
+
+    # Explicitly convert values to numeric NumPy arrays
+    shap_values = shap.Explanation(
+        values=np.asarray(raw_shap_values.values, dtype=np.float64),
+        base_values=np.asarray(raw_shap_values.base_values, dtype=np.float64),
+        data=explain_data.to_numpy(dtype=np.float64),
+        feature_names=list(explain_data.columns)
+    )
+
+    # Overall feature importance
+    st.write("### Overall Feature Importance")
+
+    shap.plots.bar(shap_values, show=False)
+    fig = plt.gcf()
+    st.pyplot(fig)
+    plt.close(fig)
+
+    # Feature impact summary
+    st.write("### SHAP Summary Plot")
+
+    shap.plots.beeswarm(shap_values, show=False)
+    fig = plt.gcf()
+    st.pyplot(fig)
+    plt.close(fig)
+
+    st.info(
+        "Positive SHAP values increase predicted sales relative "
+        "to the baseline. Negative SHAP values decrease predicted sales."
+    )
 
 
 # ----------------------------------------------------------------------
