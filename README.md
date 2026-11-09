@@ -182,6 +182,11 @@ The cleaned dataset is maintained using Git LFS.
 The project aims to provide insights into how customer footfall and other store-related factors influence sales performance.
 
 The interactive dashboard makes it easier to explore store performance, understand relationships between variables, and interpret regression model results.
+## 🚀 Live Project Demo
+
+**Deployed Application:** [AI-Driven Store Footfall Impact Analysis](https://hcl-capstone-8hdvtrhzk8kcoknqnn6mj3.streamlit.app/)
+
+**GitHub Repository:** [HCL-CAPSTONE](https://github.com/varshitha211/HCL-CAPSTONE)
 
 ## Author
 
